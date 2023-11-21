@@ -12,8 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Furniture App UI',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: Colors.white,
+        ),
       ),
       home: const FurnitureApp(),
     );
@@ -27,11 +28,11 @@ class FurnitureApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.only(top: 20, bottom: 20), // 전체 컨테이너에 패딩 적용
+        padding: const EdgeInsets.only(top: 20, bottom: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 40), // 상단 여백
+          children: [
+            const SizedBox(height: 40),
             const Text(
               'Center',
               style: TextStyle(
@@ -40,51 +41,59 @@ class FurnitureApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20), // 섹션 사이의 여백
-            _buildStatisticCard(),
-            const SizedBox(height: 20), // 섹션 사이의 여백
-            _buildFeatureList(),
-            const SizedBox(height: 20), // 섹션 사이의 여백
-            _buildSettingsList(context),
+            const SizedBox(height: 20),
+            statisticCard(),
+            const SizedBox(height: 20),
+            featureList(),
+            const SizedBox(height: 20),
+            settingsList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatisticCard() {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), // 둥근 모서리 설정
+  Widget statisticCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 10, 2, 162).withOpacity(0.9),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
-      color: Colors.blue, // 카드의 배경색을 파란색으로 설정
-      margin: const EdgeInsets.all(15.0), // 카드에 마진을 추가
+      margin: const EdgeInsets.all(15.0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0), // 내부 패딩을 추가
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          children: <Widget>[
-            _buildUserRow(), // 사용자 이미지와 이름을 표시하는 새로운 함수
-            const SizedBox(height: 15.0), // 두 섹션 사이에 공간 추가
-            _buildStatisticRow(), // 기존의 통계를 표시하는 Row
+          children: [
+            userRow(),
+            const SizedBox(height: 20.0),
+            statisticRow(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUserRow() {
+  Widget userRow() {
     return const Row(
       mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        SizedBox(width: 25.0), // 이미지와 텍스트 사이에 공간 추가
+      children: [
+        SizedBox(width: 20.0),
         CircleAvatar(
-          backgroundImage: AssetImage('lib/tt.jpg'), // 사용자의 이미지 경로
-          radius: 30.0, // 이미지의 반지름 크기 설정
+          backgroundImage: AssetImage('lib/tt.jpg'),
+          radius: 30.0,
         ),
-        SizedBox(width: 15.0), // 이미지와 텍스트 사이에 공간 추가
+        SizedBox(width: 15.0),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // 텍스트를 왼쪽으로 정렬
-          children: <Widget>[
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
               'Mausam Rayamajhi',
               style: TextStyle(
@@ -105,134 +114,141 @@ class FurnitureApp extends StatelessWidget {
     );
   }
 
-  Widget _buildStatisticRow() {
+  Widget statisticRow() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 아이템들을 고르게 배치
-      children: <Widget>[
-        _buildStatisticItem('846', 'Collect'),
-        _buildStatisticItem('51', 'Attention'),
-        _buildStatisticItem('267', 'Track'),
-        _buildStatisticItem('39', 'Coupons'),
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        statisticItem('846', 'Collect'),
+        statisticItem('51', 'Attention'),
+        statisticItem('267', 'Track'),
+        statisticItem('39', 'Coupons'),
       ],
     );
   }
 
-  Widget _buildStatisticItem(String value, String label) {
-    // 통계 아이템 위젯 구현
+  Widget statisticItem(String value, String label) {
     return Column(
-      mainAxisSize: MainAxisSize.min, // 컨텐츠 크기에 맞게
-      children: <Widget>[
+      mainAxisSize: MainAxisSize.min,
+      children: [
         Text(
           value,
           style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-        ), // 숫자 색상을 흰색으로 설정
-        Text(label,
-            style: const TextStyle(color: Colors.white)), // 라벨 색상을 흰색으로 설정
+        ),
+        Text(label, style: const TextStyle(color: Colors.white)),
       ],
     );
   }
 
-  Widget _buildFeatureList() {
+  Widget featureList() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30.0), // 좌우 패딩을 줄입니다.
+      padding: const EdgeInsets.symmetric(horizontal: 30.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          _buildFeatureItem(Icons.account_balance_wallet, 'Wallet'),
-          _buildFeatureItem(Icons.local_shipping, 'Delivery'),
-          _buildFeatureItemWithBadge(Icons.message, 'Message', '2'),
-          _buildFeatureItem(Icons.build, 'Service'),
+        children: [
+          featureItem(Icons.account_balance_wallet, 'Wallet'),
+          featureItem(Icons.local_shipping, 'Delivery'),
+          featureItem(Icons.message, 'Message'),
+          featureItem(Icons.build, 'Service'),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureItem(IconData icon, String label) {
+  Widget featureItem(IconData icon, String label) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        IconButton(
-          icon: Icon(icon),
-          onPressed: () {
-            // 아이콘 버튼 클릭 시 수행할 동작
-          },
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color.fromARGB(255, 192, 192, 192),
+          ),
+          child: IconButton(
+            icon: Icon(icon),
+            onPressed: () {},
+          ),
         ),
+        const SizedBox(height: 7.0),
         Text(label),
       ],
     );
   }
 
-  Widget _buildFeatureItemWithBadge(
-      IconData icon, String label, String badgeContent) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Stack(
-          alignment: Alignment.topRight,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(icon),
-              onPressed: () {
-                // 아이콘 버튼 클릭 시 수행할 동작
-              },
-            ),
-            if (badgeContent.isNotEmpty) // 배지 내용이 있는 경우에만 배지 표시
-              CircleAvatar(
-                radius: 10.0,
-                backgroundColor: Colors.blue,
-                child: Text(
-                  badgeContent,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        Text(label),
-      ],
-    );
-  }
+  // Widget featureItemWithBadge(
+  //     IconData icon, String label, String badgeContent) {
+  //   return Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [
+  //       Stack(
+  //         alignment: Alignment.topRight,
+  //         children: [
+  //           IconButton(
+  //             icon: Icon(icon),
+  //             onPressed: () {},
+  //           ),
+  //           if (badgeContent.isNotEmpty)
+  //             CircleAvatar(
+  //               radius: 10.0,
+  //               backgroundColor: Colors.blue,
+  //               child: Text(
+  //                 badgeContent,
+  //                 style: const TextStyle(
+  //                   color: Colors.white,
+  //                   fontSize: 12.0,
+  //                 ),
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //       Text(label),
+  //     ],
+  //   );
+  // }
 
-  Widget _buildSettingsList(BuildContext context) {
+  Widget settingsList(BuildContext context) {
     return Expanded(
       child: ListView(
-        padding: const EdgeInsets.all(8.0), // 리스트뷰 패딩 추가
+        padding: const EdgeInsets.all(8.0),
         children: [
-          _buildSettingsCard(Icons.location_on, 'Address',
+          settingsCard(Icons.location_on, 'Address',
               'Ensure your harvesting address', Colors.purple, context),
-          _buildSettingsCard(Icons.lock, 'Privacy', 'System permission change',
+          settingsCard(Icons.lock, 'Privacy', 'System permission change',
               Colors.pink, context),
-          _buildSettingsCard(Icons.settings, 'General',
-              'Basic functional settings', Colors.orange, context),
-          _buildSettingsCard(Icons.notifications, 'Notification',
+          settingsCard(Icons.settings, 'General', 'Basic functional settings',
+              Colors.orange, context),
+          settingsCard(Icons.notifications, 'Notification',
               'Take over the news in time', Colors.blue, context),
         ],
       ),
     );
   }
 
-  Widget _buildSettingsCard(IconData icon, String title, String subtitle,
+  Widget settingsCard(IconData icon, String title, String subtitle,
       Color iconBgColor, BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 12.0), // 카드별 상하 마진 추가
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0), // 카드의 모서리를 둥글게 설정
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 12.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 3, 47, 244).withOpacity(0.2),
+            spreadRadius: 8,
+            blurRadius: 10.0,
+            offset: const Offset(3, 3),
+          ),
+        ],
       ),
-      elevation: 4.0, // 카드의 그림자 효과
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: iconBgColor, // 아이콘 배경 색상을 파라미터로 받음
-          child: Icon(icon, color: Colors.white), // 아이콘 색상
+          backgroundColor: iconBgColor,
+          child: Icon(icon, color: Colors.white),
         ),
         title: Text(title),
         subtitle: Text(subtitle),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () {
-          // 각 설정을 여는 코드
-        },
+        onTap: () {},
       ),
     );
   }
